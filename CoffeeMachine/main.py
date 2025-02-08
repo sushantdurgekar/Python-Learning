@@ -18,13 +18,14 @@ def processing_coins(coffee_type):
     global MONEY
     required_coins=MENU[coffee_type]["cost"]
     print("Please insert coins.")
-    total=float(input("how many quarters?: "))*QUARTERS
-    total+=float(input("how many dimes?: "))*DIMES
-    total+=float(input("how many nickles?: "))*NICKLES
-    total+=float(input("how many pennies?: "))*PENNIES
-    if total>=required_coins:
+    quarters=float(input("how many quarters?: "))*QUARTERS
+    dimes=float(input("how many dimes?: "))*DIMES
+    nickles=float(input("how many nickles?: "))*NICKLES
+    pennies=float(input("how many pennies?: "))*PENNIES
+    total_coin_inserted=quarters+dimes+nickles+pennies
+    if total_coin_inserted>=required_coins:
         MONEY+=required_coins
-        coin_change=round(total-required_coins,2)
+        coin_change=total_coin_inserted-required_coins
         if coin_change==0:
             print("Money Accepted")
         else:
@@ -38,11 +39,22 @@ def processing_coins(coffee_type):
 # TODO 4: Check resources sufficient?
 def is_resource_sufficient(coffee_type):
     drink_items=MENU[coffee_type]["ingredients"]
-    for item in drink_items:
-        if COFFEE_RESOURCES[item]<drink_items[item]:
-            print(f"Sorry there is not enough {item}.")
+    if COFFEE_RESOURCES["water"]>=drink_items["water"]:
+        if COFFEE_RESOURCES["coffee"]>=drink_items["coffee"]:
+            if "milk" in drink_items:
+                if COFFEE_RESOURCES["milk"] >= drink_items["milk"]:
+                    return True
+                else:
+                    print("Sorry there is not enough milk.")
+                    return False
+            else:
+                return True
+        else:
+            print("Sorry there is not enough coffee.")
             return False
-    return True
+    else:
+        print("Sorry there is not enough water.")
+        return False
 
 #  TODO 7: Make Coffee. and deduct resources
 def deduct_coffee_items(coffee_type):
@@ -84,4 +96,40 @@ while coffee_machine_is_on:
         make_coffee(coffee_machine_inputs)
     else:
         print("Invalid Input!!!! Please try again")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
